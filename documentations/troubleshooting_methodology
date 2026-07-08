@@ -1,0 +1,174 @@
+Systematic Network Troubleshooting Methodology
+Author: Israel Olawuni
+Date: 08 July 2026
+
+Troubleshooting Flowchart
+╔══════════════════════════════════════════════════════════════════════════╗
+║          SYSTEMATIC NETWORK TROUBLESHOOTING FLOWCHART                   ║
+║          Rule: Test ONE layer at a time — inside out                    ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+                    [ START: Network problem reported ]
+                                    │
+                                    ▼
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │  STEP 1 — Test TCP/IP Stack                                         │
+  │  Command : ping 127.0.0.1                                           │
+  │  Tests   : NIC driver loaded, TCP/IP stack operational              │
+  └─────────────────────────────────────────────────────────────────────┘
+                    │                               │
+                  FAIL                            PASS
+                    │                               │
+                    ▼                               ▼
+        ┌───────────────────┐          ┌────────────────────────────────┐
+        │ STOP — Stack/NIC  │          │  STEP 2 — Test Local IP        │
+        │ driver fault      │          │  Command : ping <own IP>       │
+        │ Fix: reinstall    │          │  e.g.      ping 10.10.10.10    │
+        │ NIC driver or     │          │  Tests  : IP correctly applied │
+        │ reset TCP/IP      │          │           Adapter is UP        │
+        └───────────────────┘          └────────────────────────────────┘
+                                                    │                │
+                                                  FAIL             PASS
+                                                    │               │
+                                                    ▼               ▼
+                                        ┌───────────────────┐   ┌────────────────────────────────┐
+                                        │ STOP — IP config  │   │  STEP 3 — Test Default Gateway │
+                                        │ fault             │   │  Command : ping <gateway IP>   │
+                                        │ Fix: apply static │   │  e.g.      ping 10.10.10.1     │
+                                        │ IP to correct     │   │  Tests  : Local routing works  │
+                                        │ adapter           │   │           Subnet mask correct  │
+                                        └───────────────────┘   └────────────────────────────────┘
+                                                                             │              │
+                                                                           FAIL           PASS
+                                                                             │               │
+                                                                             ▼               ▼
+                                                                 ┌───────────────────┐   ┌────────────────────────────────┐
+                                                                 │ STOP — Routing /  │   │  STEP 4 — Test External IP     │
+                                                                 │ subnet fault      │   │  Command : ping 8.8.8.8        │
+                                                                 │ Fix: correct      │   │  Tests   : Internet routing    │
+                                                                 │ gateway IP or     │   │            Firewall (ICMP out) │
+                                                                 │ subnet mask       │   │  Note    : Bypasses DNS fully  │
+                                                                 └───────────────────┘   └────────────────────────────────┘
+                                                                                                      │              │
+                                                                                                    FAIL           PASS
+                                                                                                      │               │
+                                                                                                      ▼               ▼
+                                                                                          ┌───────────────────┐   ┌────────────────────────────────┐
+                                                                                          │ STOP — ISP/FW     │   │  STEP 5 — Test DNS Resolution  │
+                                                                                          │ fault             │   │  Command : ping google.com     │
+                                                                                          │ Fix: check        │   │  Tests   : Name → IP lookup    │
+                                                                                          │ firewall rules,   │   │           DNS server reachable │
+                                                                                          │ default route,    │   │           UDP port 53 open     │
+                                                                                          │ ISP connection    │   └────────────────────────────────┘
+                                                                                          └───────────────────┘                │              │
+                                                                                                                             FAIL           PASS
+                                                                                                                               │               │
+                                                                                                                               ▼               ▼
+                                                                                                                   ┌───────────────────┐   ┌─────────────┐
+                                                                                                                   │ STOP — DNS fault  │   │  ALL CLEAR  │
+                                                                                                                   │ Fix: correct DNS  │   │             │
+                                                                                                                   │ server IP or      │   └─────────────┘
+                                                                                                                   │ restart service   │
+                                                                                                                   └───────────────────┘
+
+
+QUICK ERROR REFERENCE
+══════════════════════════════════════════════════════════════════════════
+  Error message                 │ Layer       │ What it means
+  ──────────────────────────────┼─────────────┼────────────────────────────────────────────
+  Destination host unreachable  │ Routing     │ Packet never left — OS has no route
+  Network is unreachable        │ Routing     │ Linux equivalent of above
+  Request timed out             │ Firewall    │ Packet sent — no reply came back
+  General failure               │ Stack/NIC   │ Windows — no gateway or adapter fault
+  Unknown host / Name not found │ DNS         │ Name resolution failed
+══════════════════════════════════════════════════════════════════════════
+  KEY: "Unreachable" = fix IP/routing first.  "Timed out" = check firewall.
+
+Test Explanation
+1. Test the Loopback: ping 127.0.0.1
+The loopback address (127.0.0.1) is a virtual address built into every operating system. It does not go through any physical network adapter or cable. Pinging it tests only the software layer.
+If the loopback fails, nothing else you do at the network level will help. The stack itself is broken. 
+What a failure indicates:
+The TCP/IP stack has failed to load or has become corrupted. This is rare but serious. Causes include:
+1.	A corrupted or missing NIC driver
+2.	TCP/IP protocol removed from the 
+3.	Operating system corruption
+Real-world example:
+A Windows Server VM is freshly deployed and no network works at all. ping 127.0.0.1 fails. Investigation reveals the VirtIO network driver was not installed as part of the VM template, the OS has no functional NIC driver, so the entire TCP/IP stack has no interface to work with.
+
+2. Test the Local IP
+Pinging your own assigned IP address (e.g. ping 10.10.10.10) tests whether that IP has been correctly applied to a specific network adapter and whether the adapter is in an UP state.
+Pinging your own IP routes the packet through the actual network adapter. If this fails but loopback passes, the problem is specifically in the IP assignment or adapter state.
+What a pass tells you:
+1.	The IP address is correctly applied to an adapter
+2.	The adapter is UP and operational
+3.	The OS routing table has an entry for the local subnet
+What a failure indicates:
+1.	The IP was not applied (shows up as APIPA 169.254.x.x instead)
+2.	The IP was applied to the wrong adapter
+3.	The adapter is in a DOWN state
+4.	On VMs: the IP may be on a NIC that VirtualBox has attached to the wrong network type
+Real-world example
+From the previous task, ping 10.10.10.10 from DC01 returned "Destination host unreachable" from DC01's own IP. The IP 10.10.10.10 was applied to Ethernet (the NAT adapter) instead of Ethernet 2 (the Host-Only adapter).
+
+3. Test the Gateway:
+The default gateway is the router that connects the local subnet to the outside world. Pinging it tests whether the machine can reach another device on the same local network, whether the gateway IP is correct.
+What a failed gateway test means for everything beyond it:
+If the gateway can't be reach, then the internet, DNS and any other devices outside the subnet cannot be reach.
+Real-world example:
+A new server is deployed with a static IP of 192.168.1.50/24 and a default gateway of 192.168.2.1. The gateway ping fails because 192.168.2.1 is on a different subnet. The subnet mask is correct, but the gateway IP was typed incorrectly during setup.
+
+4. Test External IP Directly: ping 8.8.8.8
+8.8.8.8 is Google's public DNS server. Pinging it by IP address (not by name) tests internet routing and firewall rules without involving DNS at all. This is the key diagnostic step that separates DNS problems from routing/firewall problems.
+What a failure indicates (if gateway passed):
+1.	The default route to the internet is broken
+2.	A firewall is blocking outbound traffic beyond the gateway
+3.	The ISP connection is down
+4.	Network Address Translation (NAT) is not working correctly
+Real-world example:
+A user reports they can't access websites. ping 8.8.8.8 fails but ping 192.168.1.1 (gateway) succeeds. Investigation reveals the ISP router is up but the WAN link beyond it is down — an ISP outage. The problem is not on any internal device at all.
+
+5. Test DNS Resolution: ping google.com
+It tests multiple things simultaneously:
+1.	DNS resolution (can the OS convert "google.com" to an IP?)
+2.	Internet routing (can the resolved IP be reached?)
+3.	Firewall rules (is ICMP allowed to that IP?)
+4.	Remote host availability (is google.com responding?)
+What a failure indicates (if 8.8.8.8 passed):
+1.	The configured DNS server IP is wrong
+2.	The DNS server is unreachable (different from the tested 8.8.8.8)
+3.	DNS service is down on the configured server
+4.	UDP port 53 is blocked by a firewall
+Real-world example:
+An office server can ping 8.8.8.8 but cannot browse any website. nslookup google.com times out. Investigation reveals the corporate DNS server IP (192.168.1.10) was changed to 192.168.1.100 after a server migration, but the workstations were never updated. The workstations are querying an IP where no DNS service exists.
+
+Scenario Analysis
+Scenario A: ping google.com fails, ping 8.8.8.8 works
+Problem: DNS failure 
+Reasoning: Since 8.8.8.8 responds, the internet path and ICMP rules are fine. The only thing ping google.com adds that ping 8.8.8.8 doesn't is name resolution. 
+Common causes: Wrong DNS server IP configured, DNS service crashed on internal server, UDP port 53 blocked.
+
+Scenario B: ping gateway works, ping 8.8.8.8 fails
+Problem: Routing or firewall failure between LAN and internet
+Reasoning: Gateway is alive (local network is fine), but packets are not reaching the public internet. The break is somewhere between the gateway and 8.8.8.8.
+Common causes: ISP outage, WAN link down, NAT misconfigured on the router, firewall blocking outbound ICMP or all traffic, default route missing beyond the gateway.
+
+Scenario C: ping loopback (127.0.0.1) fails
+Problem: TCP/IP stack failure 
+Reasoning: The loopback never touches the network. If it fails, the OS networking subsystem itself is broken.
+Common causes: Missing or corrupt NIC driver, TCP/IP protocol unbound from the adapter (Windows), OS corruption, VM with no network adapter assigned at all.
+
+Scenario D: Everything fails except loopback.
+Problem: Network adapter or IP configuration failure
+Reasoning: The OS can process packets internally (stack is fine), but cannot send anything onto the physical network. 
+Common causes:
+1.	No static IP configured (APIPA 169.254.x.x appears instead)
+2.	IP applied to wrong adapter
+Real-world example (from this lab):
+During Task 2.2, loopback passed on both VMs, but pinging across servers failed with "Network is unreachable." Ubuntu's enp0s8 (the Host-Only NIC) was attached to a NAT adapter in VirtualBox — the IP 10.10.10.20 was configured inside the OS but the virtual wire could not carry traffic to DC01.
+
+Common Troubleshooting Mistakes
+1. Testing multiple layers at once: Always test loopback then local IP then gateway then external IP then DNS in order.
+2. Assuming "connected" means "correct": Always verify the IP address, subnet mask, and gateway with ipconfig /all or ip addr show.
+3. Fixing symptoms instead of causes: Follow the layer order. If Step 4 (ping 8.8.8.8) also fails, fix routing first. Only investigate DNS after confirming routing works.
+4. Not documenting the before state: Always run and capture your diagnostic script output before making any change. "Before" screenshots are as important as "after" screenshots. 
