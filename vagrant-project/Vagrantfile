@@ -1,7 +1,7 @@
 # ============================================================
 # Vagrantfile — Automated Ubuntu Server Provisioning
 # Author: Israel
-# Date: July 2026
+# Date: August 2026
 # Description: Provisions a reproducible Ubuntu Server 22.04
 #              environment with static networking, essential
 #              tools, firewall rules, and SSH hardening —
