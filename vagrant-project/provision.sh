@@ -1,8 +1,8 @@
 #!/bin/bash
 # ============================================================
 # Vagrant Provisioning Script — Ubuntu Server 22.04
-# Author: Israel
-# Date: July 2026
+# Author: Israel Olawuni
+# Date: August, 2026
 # Description: Runs automatically when the VM is first created.
 #              Updates the system, installs essential tools,
 #              configures UFW, hardens SSH, and creates a
