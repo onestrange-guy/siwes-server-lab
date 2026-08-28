@@ -1,0 +1,75 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+  <diagram name="Page-1" id="nAibFp7nH-tf9d2BhEFt">
+    <mxGraphModel dx="1326" dy="2514" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-7" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+          <mxGeometry height="300" width="300" x="810" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-4" edge="1" parent="1" source="qhOH45l6Bg1z72q_2UDN-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="qhOH45l6Bg1z72q_2UDN-3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-23" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+          <mxGeometry height="170" width="170" x="875" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;h1&gt;&lt;font style=&quot;font-size: 25px;&quot;&gt;HOST MACHINE&lt;/font&gt;&amp;nbsp;&lt;/h1&gt;" vertex="1">
+          <mxGeometry height="90" width="320" x="460" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-9" edge="1" parent="1" source="qhOH45l6Bg1z72q_2UDN-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="qhOH45l6Bg1z72q_2UDN-6" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="405" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-11" edge="1" parent="1" source="qhOH45l6Bg1z72q_2UDN-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="qhOH45l6Bg1z72q_2UDN-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="120" width="320" x="460" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-2" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Server_128x128.png" value="VirtualBox" vertex="1">
+          <mxGeometry height="80" width="80" x="500" y="237.5" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-6" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+          <mxGeometry height="300" width="300" x="120" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-13" parent="1" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/generic_server.svg;" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;dns02&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="110" width="61.6" x="929.2" y="595.95" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=18;fontStyle=1" value=" VirtualBox&amp;nbsp; VMs" vertex="1">
+          <mxGeometry height="60" width="140" x="220" y="770" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-22" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=18;fontStyle=1" value=" Vagrant VMs" vertex="1">
+          <mxGeometry height="60" width="140" x="880.8" y="767" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=24;fontStyle=1" value=" Vagrant Project" vertex="1">
+          <mxGeometry height="60" width="189.2" x="865.4" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-25" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+          <mxGeometry height="124.05" width="124.05" x="140" y="625.95" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-26" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+          <mxGeometry height="124.05" width="124.05" x="280" y="625.95" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-14" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Server_Rack_128x128.png" value="" vertex="1">
+          <mxGeometry height="80" width="80" x="162.03" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-15" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Server_Rack_128x128.png" value="" vertex="1">
+          <mxGeometry height="80" width="80" x="302.03" y="635" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=15;" value=" DC01" vertex="1">
+          <mxGeometry height="30" width="60" x="172.03" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-19" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=15;" value=" DNS01" vertex="1">
+          <mxGeometry height="30" width="60" x="312.03" y="715" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-27" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=24;fontStyle=1" value=" Existing Lab" vertex="1">
+          <mxGeometry height="80" width="180" x="180" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="qhOH45l6Bg1z72q_2UDN-28" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Software_128x128.png" value="Vagrant" vertex="1">
+          <mxGeometry height="80" width="70" x="660" y="244" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
