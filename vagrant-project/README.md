@@ -1,6 +1,12 @@
 # Automated Ubuntu Server Provisioning with Vagrant
 
-Infrastructure as Code (IaC) project that provisions a complete, reproducible Ubuntu Server 22.04 environment with a single command — no manual clicking required.
+Infrastructure as Code (IaC) project that provisions a complete, reproducible Ubuntu Server 22.04 environment with a single command.
+
+---
+
+## Why Infrastructure as Code?
+
+Manual server setup doesn't scale and isn't reproducible. With this Vagrantfile, the entire environment can be destroyed and rebuilt identically at any time, by anyone, with one command. This is the same principle companies like Netflix, Google, and Amazon use to provision thousands of servers reliably.
 
 ---
 
@@ -64,19 +70,3 @@ The `provision.sh` script runs automatically on first boot and:
 6. **Runs an initial health check** — so you see the VM's status the moment provisioning finishes
 
 ---
-
-## Network Diagram
-┌─────────────────────────────────────────────────────────┐
-│ HOST MACHINE │
-│ HP EliteBook 845 G7 / Windows 11 │
-│ │
-│ ┌──────────────────┐ ┌──────────────────┐ │
-│ │ Existing Lab │ │ Vagrant Project │ │
-│ │ 192.168.100.0/24 │ │ 192.168.56.0/24 │ │
-│ │ │ │ │ │
-│ │ DC01 .10 │ │ dns02 .20 │ │
-│ │ DNS01 .20 │ │ (Ubuntu 22.04) │ │
-│ │ (VirtualBox VMs) │ │ (Vagrant-managed) │ │
-│ └──────────────────┘ └──────────────────┘ │
-│ │
-└─────────────────────────────────────────────────────────┘
