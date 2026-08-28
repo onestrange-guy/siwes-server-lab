@@ -1,0 +1,54 @@
+# ============================================================
+# Vagrantfile — Automated Ubuntu Server Provisioning
+# Author: Israel
+# Date: July 2026
+# Description: Provisions a reproducible Ubuntu Server 22.04
+#              environment with static networking, essential
+#              tools, firewall rules, and SSH hardening —
+#              all from a single "vagrant up" command.
+# ============================================================
+
+# -- Variables (kept at the top so config is easy to change) --
+VM_NAME        = "dns02"
+VM_BOX         = "ubuntu/jammy64"      # Ubuntu Server 22.04 LTS
+VM_IP          = "192.168.56.20"       # Static IP in the required 192.168.56.0/24 range
+VM_RAM         = 2048                  # 2 GB RAM
+VM_CPUS        = 2                     # 2 vCPUs
+VM_HOSTNAME    = "dns02"
+
+Vagrant.configure("2") do |config|
+
+  # --- Base box ---
+  config.vm.box = VM_BOX
+
+  # --- Hostname ---
+  config.vm.hostname = VM_HOSTNAME
+
+  # --- Networking ---
+  # Host-Only network with a static IP, matching the lab's
+  # existing 192.168.x.0/24 addressing convention used for
+  # DC01 and DNS01, but on the 192.168.56.0/24 range required
+  # by this task (Vagrant's own default Host-Only network).
+  config.vm.network "private_network", ip: VM_IP
+
+  # --- VM resource allocation ---
+  config.vm.provider "virtualbox" do |vb|
+    vb.name   = VM_NAME
+    vb.memory = VM_RAM
+    vb.cpus   = VM_CPUS
+
+    # Enable nested virtualization awareness / better performance
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
+  # --- Port forwarding for SSH from host (optional, since
+  #     Host-Only networking already allows direct SSH) ---
+  # config.vm.network "forwarded_port", guest: 22, host: 2222
+
+  # --- Shell provisioning: runs automatically on first "vagrant up" ---
+  config.vm.provision "shell", path: "provision.sh"
+
+  # --- Synced folder (default, disabled here to keep the VM lean) ---
+  config.vm.synced_folder ".", "/vagrant", disabled: false
+
+end
